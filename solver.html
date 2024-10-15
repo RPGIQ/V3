@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="solver.css"> <!-- Link to your CSS file -->
+  <title>Chemical Equation Solver</title>
+  <script type="importmap">
+    {
+      "imports": {
+        "@google/generative-ai": "https://esm.run/@google/generative-ai"
+      }
+    }
+  </script>
+</head>
+
+<body>
+
+  <div class="ai-container" style="width: 100%; margin-top: -100px;">
+    <h1 class="title" style="width: 100%;white-space: nowrap;margin-top: -100px;">
+      <span style="color: #e6e6e6; font-size: 110px;">Solve With </span><span class="ai">AI</span>
+    </h1>
+  </div>
+
+  <div class="container">
+    <!-- Input box -->
+    <textarea id="equation-input" placeholder="Solve Equation With AI Here."></textarea>
+
+    <!-- Result -->
+    <div id="result">Result will appear here</div>
+  </div>
+
+  <!-- Button to solve the equation -->
+  <button id="solve-button">Solve Equation</button>
+
+  <script type="module">
+    import { GoogleGenerativeAI } from "@google/generative-ai";
+
+    // Use your API key here
+    const API_KEY = "AIzaSyDeVwSq-uTipKfFMnwqbQcjzufebZTf4p0";
+    const genAI = new GoogleGenerativeAI(API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    async function solveEquation() {
+      let equation = document.getElementById('equation-input').value;
+
+      // Use Gemini API to solve the equation
+      const prompt = `Solve this chemical equation: ${equation}`;
+      const result = await model.generateContent(prompt);
+
+      // Display the result
+      document.getElementById('result').innerText = "Solution: " + result.response.text();
+    }
+
+    // Connect the button to the solveEquation function
+    document.getElementById('solve-button').onclick = solveEquation;
+
+  </script>
+
+</body>
+
+</html>
